@@ -1,31 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import ApexChart from "../components/Dashboard";
 import Footer from "../components/Footer";
-
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 const Data = () => {
+    const [sensorData, setSensorData] = useState([]);
+
+    const SENAI_BOUNDS = {
+        latMin: -22.91,
+        latMax: -22.90,
+        lonMin: -47.06,
+        lonMax: -47.05,
+    };
+
+    const ajusteParaSenai = (sensor) => {
+        let lat = sensor.latitude;
+        let lon = sensor.longitude;
+
+        if (lat < SENAI_BOUNDS.latMin) lat = SENAI_BOUNDS.latMin + Math.random() * 0.001;
+        if (lat > SENAI_BOUNDS.latMax) lat = SENAI_BOUNDS.latMax - Math.random() * 0.001;
+
+        if (lon < SENAI_BOUNDS.lonMin) lon = SENAI_BOUNDS.lonMin + Math.random() * 0.001;
+        if (lon > SENAI_BOUNDS.lonMax) lon = SENAI_BOUNDS.lonMax - Math.random() * 0.001;
+
+        return { ...sensor, latitude: lat, longitude: lon };
+    };
+
+
+    useEffect(() => {
+        const fetchSensorData = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Token não encontrado. Usuário não autenticado.");
+                return;
+            }
+
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/sensores", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Dados recebidos:", response.data);
+                setSensorData(response.data);
+            } catch (error) {
+                console.error("Erro ao buscar dados dos sensores:", error);
+            }
+        };
+
+        fetchSensorData();
+    }, []);
+
+
     return (
         <>
             <Header />
             <ApexChart />
             <div className="col-span-7 !mt-10 !mr-15 !ml-15">
-                <h2 className="league-regular text-[#3C096C] font-semibold text-[64px]">View on the Map</h2>
+                <h2 className="league-regular text-[#3C096C] font-semibold text-[64px]">
+                    View on the Map
+                </h2>
                 <div className="w-full h-[500px] rounded-xl overflow-hidden">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.564012282367!2d-47.06763282381148!3d-22.9002830418007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8c89bf74286b7%3A0x761e0c9ea5da22e8!2sFaculdade%20de%20Tecnologia%20de%20Campinas%20(FATEC)!5e0!3m2!1spt-BR!2sbr!4v1690584485294!5m2!1spt-BR!2sbr"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                    <MapContainer
+                        center={[-22.9075, -47.0586]} // SENAI Roberto Mange no MAPS
+                        zoom={16} 
+                        scrollWheelZoom={true}
+                        className="w-full h-full"
+                    >
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        {sensorData
+                            .filter(sensor => sensor.latitude && sensor.longitude)
+                            .map(sensor => {
+                                const sensorAjustado = ajusteParaSenai(sensor);
+                                return (
+                                    <Marker
+                                        key={sensor.id}
+                                        position={[sensorAjustado.latitude, sensorAjustado.longitude]}
+                                    >
+                                        <Popup>
+                                            <div>
+                                                <p><strong>Sensor ID:</strong> {sensor.id}</p>
+                                                <p><strong>Mac Address:</strong> {sensor.mac_address}</p>
+                                                <p><strong>Sensor:</strong> {sensor.sensor}</p>
+                                                <p><strong>Status:</strong> {sensor.status ? "Ativo" : "Inativo"}</p>
+                                                <p><strong>Unidade de Medida:</strong> {sensor.unidade_med}</p>
+                                            </div>
+                                        </Popup>
+                                    </Marker>
+                                );
+                            })}
+
+                    </MapContainer>
                 </div>
             </div>
             <Footer />
         </>
-    )
-}
+    );
+};
 
-export default Data
+export default Data;

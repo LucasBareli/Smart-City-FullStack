@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sensor1 from "../assets/Sensor 1.png";
 import Sensor2 from "../assets/Sensor 2.png";
+import Sensor3 from "../assets/Sensor 3.png"
 
-function Carousel() {
+function CarouselHome() {
     const [currentPage, setCurrentPage] = useState(0);
     const navigate = useNavigate();
 
     const items = [
         { id: 1, image: Sensor1, alt: "Sensor 1" },
         { id: 2, image: Sensor2, alt: "Sensor 2" },
-        { id: 3, image: Sensor1, alt: "Sensor 3" },
+        { id: 3, image: Sensor3, alt: "Sensor 3" },
         { id: 4, image: Sensor2, alt: "Sensor 4" },
         { id: 5, image: Sensor1, alt: "Sensor 5" },
-        { id: 6, image: Sensor1, alt: "Sensor 6" },
-        { id: 7, image: Sensor2, alt: "Sensor 7" },
+        { id: 6, image: Sensor3, alt: "Sensor 6" },
+        { id: 7, image: Sensor3, alt: "Sensor 7" },
         { id: 8, image: Sensor2, alt: "Sensor 8" },
-        { id: 9, image: Sensor2, alt: "Sensor 9" },
+        { id: 9, image: Sensor3, alt: "Sensor 9" },
         { id: 10, image: Sensor1, alt: "Sensor 10" },
-        { id: 11, image: Sensor1, alt: "Sensor 11" },
+        { id: 11, image: Sensor3, alt: "Sensor 11" },
         { id: 12, image: Sensor2, alt: "Sensor 12" },
     ];
 
@@ -77,4 +78,4 @@ function Carousel() {
     );
 }
 
-export default Carousel;
+export default CarouselHome;

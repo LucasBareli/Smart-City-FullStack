@@ -36,7 +36,7 @@ const Header = () => {
                     <img
                         src={Person}
                         alt="User"
-                        className="w-10 h-10 rounded-full !mr-5"
+                        className="w-10 h-10 rounded-full !mr-10"
                     />
                     <div className="h-6 border-l border-[#3C096C]" />
                     <button

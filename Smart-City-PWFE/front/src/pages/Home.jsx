@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import CityFooter from '../assets/CityFooter.png';
 import CityLorem from '../assets/CityLorem.png';
 import CityLorem2 from '../assets/CityLorem2.png'
-import Carousel from "../components/Carousel";
+import CarouselHome from "../components/CarouselHome";
 import Widgets from "../components/Widgets";
 import { FaArrowDownLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -106,7 +106,7 @@ function Home() {
                 <h2 className="text-[55px] font-semibold league-regular text-[#3C096C] text-end !m-15">
                     OUR SENSORS
                 </h2>
-                <Carousel />
+                <CarouselHome />
             </div>
             <img
                 src={CityFooter}

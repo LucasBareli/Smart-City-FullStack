@@ -10,6 +10,8 @@ import SensorModal from "../components/SensorModal";
 import { Check, X, Trash2, Pencil } from 'lucide-react';
 import { CiCirclePlus } from "react-icons/ci";
 import { CgArrowDownR } from "react-icons/cg";
+import CarouselSensor from "../components/CarouselSensor";
+import CarouselSensor2 from "../components/CarouselSensor2";
 
 export default function Sensors() {
   const allImages = [
@@ -61,29 +63,6 @@ export default function Sensors() {
     return () => clearInterval(interval);
   }, [allImages.length]);
 
-  const handleSubmit = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const url = editingSensor
-      ? `http://127.0.0.1:8000/api/sensores/${editingSensor.id}/`
-      : "http://127.0.0.1:8000/api/sensores/";
-
-    const method = editingSensor ? "put" : "post";
-    const response = await axios({
-      url,
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: formData, // Certifique-se de que `formData` contém os campos esperados pelo backend.
-    });
-
-    onSave(response.data); // Atualiza a lista com o novo sensor salvo.
-  } catch (error) {
-    console.error("Erro ao salvar sensor:", error);
-  }
-};
-
 
   const bigImage = allImages[currentIndex];
 
@@ -131,30 +110,32 @@ export default function Sensors() {
     setIsModalOpen(true);
   }
 
+  // Função para excluir sensor (DELETE)
   function handleDelete(sensorToDelete) {
-  if (window.confirm("Tem certeza de que deseja excluir este sensor?")) {
-    const token = localStorage.getItem("token");
-    axios
-      .delete(`http://127.0.0.1:8000/api/sensores/${sensorToDelete.id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        setTableData(tableData.filter((item) => item !== sensorToDelete));
-        console.log("Sensor excluído com sucesso.");
-      })
-      .catch((error) => {
-        console.error("Erro ao excluir sensor:", error);
-      });
+    if (window.confirm("Tem certeza de que deseja excluir este sensor?")) {
+      const token = localStorage.getItem("token");
+      axios
+        .delete(`http://127.0.0.1:8000/api/sensores/${sensorToDelete.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          setTableData(tableData.filter((item) => item !== sensorToDelete));
+          console.log("Sensor excluído com sucesso.");
+        })
+        .catch((error) => {
+          console.error("Erro ao excluir sensor:", error);
+        });
+    }
   }
-}
-
 
   function handleSave(sensor) {
     if (editingSensor) {
-      // Editar
-      setTableData(tableData.map((item) => (item === editingSensor ? sensor : item)));
+      // Atualizar sensor existente
+      setTableData(
+        tableData.map((item) => (item.id === sensor.id ? sensor : item))
+      );
     } else {
-      // Criar novo
+      // Adicionar novo sensor
       setTableData([...tableData, sensor]);
     }
     setIsModalOpen(false);
@@ -179,7 +160,11 @@ export default function Sensors() {
     <>
       <Header />
       <div className="flex flex-col items-center">
-        <div className="w-full !p-20 !mt-30 overflow-x-auto max-w-450">
+        <div className="w-full !p-20 !mt-15 overflow-x-auto max-w-450">
+          <p className="league-regular font-thin text-[16px] flex justify-end !mb-5 text-[#77625C]">
+            Visit the page Data to see more details <br />
+            about the sensors and there you can filter*
+          </p>
           <table className="table-auto w-full text-left lateef-regular font-regular text-[32px]">
             <thead className="border-collapse border-b border-[#3C096C]">
               <tr className="text-[#3C096C]">
@@ -188,6 +173,8 @@ export default function Sensors() {
                 <th className="px-4 py-2 font-medium">Measure</th>
                 <th className="px-4 py-2 font-medium">Status</th>
                 <th className="px-4 py-2 font-medium">Mac-Address</th>
+                <th className="px-4 py-2 font-medium">Latitude</th>
+                <th className="px-4 py-2 font-medium">Longitude</th>
                 <th
                   className="text-[#17CF96] cursor-pointer hover:text-[#17cf95a6]"
                   onClick={openNewModal}
@@ -216,15 +203,19 @@ export default function Sensors() {
                     )}
                   </td>
                   <td className="px-4 py-2 text-black league-regular text-[24px] font-thin">{sensor.mac_address}</td>
+                  <td className="px-4 py-2 text-black league-regular text-[24px] font-thin">{sensor.latitude}</td>
+                  <td className="px-4 py-2 text-black league-regular text-[24px] font-thin">{sensor.longitude}</td>
                   <td className="px-4 py-2 flex items-center space-x-2">
                     <Pencil
                       className="text-[#528EE9] cursor-pointer hover:text-[#528ee9ab] !mt-15"
                       onClick={() => openEditModal(sensor)}
                     />
-                    <Trash2
-                      className="text-[#CF1800] cursor-pointer hover:text-[#cf1800a6] !mt-15"
-                      onClick={() => handleDelete(sensor)}
-                    />
+                    <button>
+                      <Trash2
+                        className="text-[#CF1800] cursor-pointer hover:text-[#cf1800a6] !mt-15"
+                        onClick={() => handleDelete(sensor)}
+                      />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -242,7 +233,7 @@ export default function Sensors() {
                   >
                     1
                   </button>
-                  <span className="text-[#3C096C] font-medium">...</span>
+                  <span className="text-[#3C096C] text-[40px] !ml-2 !mr-2">...</span>
                 </>
               )}
 
@@ -275,81 +266,19 @@ export default function Sensors() {
             </div>
           </div>
 
-          {/* Carrossel */}
-          <div className="flex justify-center items-center w-full !mt-10">
-            <div className="flex items-center w-full max-w-[1200px]">
-              <div className="relative w-[430px] h-[650px] rounded-lg overflow-hidden">
-                <img
-                  src={bigImage.src}
-                  alt={bigImage.alt}
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
+          <CarouselSensor
+            images={allImages}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+          />
 
-              <div className="flex flex-col justify-center !ml-10 !mt-20">
-                <h2 className="text-[58px] font-semibold league-regular text-[#3C096C] leading-tight text-left max-w-[650px]">
-                  {bigImage.title}
-                </h2>
-                <p className="text-black font-thin league-regular text-[22px] mt-4 text-left max-w-[900px]">
-                  {bigImage.text}
-                </p>
+          <CarouselSensor2
+            items={carrosselData}
+            currentIndex={currentIndex2}
+            onNext={handleNext2}
+            onPrev={handlePrev2}
+          />
 
-                <div className="flex space-x-8 gap-7 !mt-10">
-                  {allImages.map(({ src, alt, label }, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center space-y-1 cursor-pointer"
-                      onClick={() => setCurrentIndex(index)}
-                    >
-                      <img
-                        src={src}
-                        alt={alt}
-                        className="w-40 h-40 rounded-lg object-cover !mt-40"
-                      />
-                      <span className="text-[16px] text-black league-regular font-bold">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          {/* Carrossel2 */}
-          <div className="flex flex-col items-center justify-center !mt-20 p-8 bg-[#F9F9F9] rounded-lg max-w-[1650px] relative">
-            <div className="flex w-full items-start justify-between">
-              <div className="max-w-[1200px] pr-8">
-                <p className="text-black font-thin text-[32px] league-regular !ml-40 !mt-10">
-                  {currentItem.text}
-                </p>
-              </div>
-              <div className="flex mt-4 justify-end w-full">
-                <div className="!mr-15">
-                  <button
-                    onClick={handlePrev2}
-                    className="!mr-2"
-                  >
-                    <CgArrowDownR className="text-black text-2xl transform rotate-90 cursor-pointer hover:text-[#17CF96]" />
-                  </button>
-                  <button
-                    onClick={handleNext2}
-                    className="!mr-2 !mt-85"
-                  >
-                    <CgArrowDownR className="text-black text-2xl transform -rotate-90 cursor-pointer hover:text-[#17CF96]" />
-                  </button>
-                </div>
-              </div>
-              <div className="w-300">
-                <img
-                  src={currentItem.image}
-                  alt="Carrossel Item"
-                  className="rounded-lg object-cover w-full h-95"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />
