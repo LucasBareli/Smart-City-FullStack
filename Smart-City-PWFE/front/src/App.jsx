@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Sensors from "./pages/Sensors";
 import Data from "./pages/Data";
+import Environments from './pages/Environments';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<Home />} />
         <Route path="/sensors" element={<Sensors />} />
+        <Route path="/environments" element={<Environments />} />
         <Route path="/data" element={<Data />} />
       </Routes>
     </Router>

@@ -28,6 +28,9 @@ const Header = () => {
                         <Link to="/sensors">SENSORS</Link>
                     </li>
                     <li className="cursor-pointer hover:text-[#17CF96]">
+                        <Link to="/environments">ENVIRONMENTS</Link>
+                    </li>
+                    <li className="cursor-pointer hover:text-[#17CF96]">
                         <Link to="/data">DATA</Link>
                     </li>
                 </ul>

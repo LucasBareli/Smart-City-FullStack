@@ -33,17 +33,20 @@ function Home() {
                             </h3>
                         </div>
                         <ul className="flex space-x-8 text-[36px] lateef-regular font-regular text-white gap-20 !m-10">
-                            <li className="cursor-pointer hover:text-[#17CF96] !ml-130">
+                            <li className="cursor-pointer hover:text-[#17CF96] !ml-100">
                                 <Link to="/home">HOME</Link>
                             </li>
                             <li className="cursor-pointer hover:text-[#17CF96]">
                                 <Link to="/sensors">SENSORS</Link>
                             </li>
                             <li className="cursor-pointer hover:text-[#17CF96]">
+                                <Link to="/environments">ENVIRONMENTS</Link>
+                            </li>
+                            <li className="cursor-pointer hover:text-[#17CF96]">
                                 <Link to="/data ">DATA</Link>
                             </li>
                         </ul>
-                        <div className="bg-[#17CF96] text-[36px] text-white rounded-full w-40 h-9 flex items-center justify-center !mr-20">
+                        <div className="bg-[#17CF96] text-[36px] text-white rounded-full w-40 h-9 flex items-center justify-center">
                             {username ? `Welcome ${username}` : <Link to="/signup">Sign Up</Link>}
                         </div>
                     </nav>

@@ -65,7 +65,7 @@ const Data = () => {
                 </h2>
                 <div className="w-full h-[500px] rounded-xl overflow-hidden">
                     <MapContainer
-                        center={[-22.9075, -47.0586]} // SENAI Roberto Mange no MAPS
+                        center={[-22.9075, -47.0586]} // Cordenadas do SENAI Roberto Mange no MAPS
                         zoom={16} 
                         scrollWheelZoom={true}
                         className="w-full h-full"
@@ -85,11 +85,11 @@ const Data = () => {
                                     >
                                         <Popup>
                                             <div>
-                                                <p><strong>Sensor ID:</strong> {sensor.id}</p>
-                                                <p><strong>Mac Address:</strong> {sensor.mac_address}</p>
-                                                <p><strong>Sensor:</strong> {sensor.sensor}</p>
-                                                <p><strong>Status:</strong> {sensor.status ? "Ativo" : "Inativo"}</p>
-                                                <p><strong>Unidade de Medida:</strong> {sensor.unidade_med}</p>
+                                                <p className="league-regular"><strong className="league-regular">Sensor ID:</strong> {sensor.id}</p>
+                                                <p className="league-regular"><strong className="league-regular">Mac Address:</strong> {sensor.mac_address}</p>
+                                                <p className="league-regular"><strong className="league-regular">Sensor:</strong> {sensor.sensor}</p>
+                                                <p className="league-regular"><strong className="league-regular">Status:</strong> {sensor.status ? "Ativo" : "Inativo"}</p>
+                                                <p className="league-regular"><strong className="league-regular">Unidade de Medida:</strong> {sensor.unidade_med}</p>
                                             </div>
                                         </Popup>
                                     </Marker>

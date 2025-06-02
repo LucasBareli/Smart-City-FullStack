@@ -31,6 +31,9 @@ const Footer = () => {
                     <a href="/sensors" className="text-black text-[20px] font-semibold league-regular hover:underline">
                         Sensors
                     </a>
+                    <a href="/environments" className="text-black text-[20px] font-semibold league-regular hover:underline">
+                        Environments
+                    </a>
                     <a href="/data" className="text-black text-[20px] font-semibold league-regular hover:underline">
                         Data
                     </a>
