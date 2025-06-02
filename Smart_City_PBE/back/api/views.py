@@ -71,7 +71,8 @@ class SensoresSearchView(ListAPIView):
     serializer_class = SensoresSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['sensor', 'mac_address', 'unidade_med', 'latitude', 'longitude', 'status']
+    filterset_fields = ['status']
+    search_fields = ['sensor', 'mac_address', 'unidade_med', 'latitude', 'longitude']
 
 class AmbientesSearchView(ListAPIView):
     queryset = Ambientes.objects.all()

@@ -17,17 +17,14 @@ const Dashboard = () => {
   const [selectedPeriodStart, setSelectedPeriodStart] = useState("");
   const [selectedPeriodEnd, setSelectedPeriodEnd] = useState("");
   const [selectedEnvironment, setSelectedEnvironment] = useState("");
-  const [selectedSensor, setSelectedSensor] = useState(null); // Guardar objeto completo
+  const [selectedSensor, setSelectedSensor] = useState(null);
   const [searchTermSensor, setSearchTermSensor] = useState("");
 
-  // Token de autenticação
   const token = localStorage.getItem("token");
 
-  // Buscar ambientes para popular filtro de ambiente
+  // Buscar ambientes (uma vez)
   useEffect(() => {
-
     const fetchEnvironments = async () => {
-      const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token não encontrado. Usuário não autenticado.");
         return;
@@ -36,25 +33,23 @@ const Dashboard = () => {
         const response = await axios.get("http://127.0.0.1:8000/api/ambientes", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        onEnvironmentChange(response.data);
+        setEnvironments(response.data);
       } catch (error) {
         console.error("Erro ao buscar ambientes:", error);
       }
     };
 
-
     fetchEnvironments();
-  }, [selectedEnvironment, token]);
+  }, [token]);
 
-  // Buscar sensores de acordo com filtro tipo sensor
+  // Buscar sensores conforme filtro ambiente e busca por nome
   useEffect(() => {
-
     const fetchSensors = async () => {
-      const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token não encontrado. Usuário não autenticado.");
         return;
       }
+
       try {
         const url = searchTermSensor
           ? "http://127.0.0.1:8000/api/sensores/search"
@@ -62,7 +57,7 @@ const Dashboard = () => {
 
         const params = {};
         if (searchTermSensor) params.search = searchTermSensor;
-        if (selectedEnvironment) params.environment_id = selectedEnvironment;
+        if (selectedEnvironment) params.ambiente_id = selectedEnvironment;
 
         const resp = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
@@ -83,25 +78,33 @@ const Dashboard = () => {
     fetchSensors();
   }, [searchTermSensor, selectedEnvironment, token]);
 
-  // Buscar históricos filtrando por sensor e data (periodo)
-  useEffect(() => {
+  // Formatar datas para ISO sem timezone para API (se precisar)
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toISOString().slice(0, 19);
+  };
 
+  // Buscar histórico filtrado por sensor, período e ambiente
+  useEffect(() => {
     const fetchHistoricos = async () => {
-      const token = localStorage.getItem("token");
+      if (!selectedSensor) {
+        setHistoricoData({});
+        return;
+      }
       if (!token) {
         console.error("Token não encontrado. Usuário não autenticado.");
         return;
       }
+
       try {
-        const params = {
-          sensor: selectedSensor.id,  // Passar o ID do sensor completo
-        };
-        if (selectedPeriodStart) params.data_inicial = selectedPeriodStart;
-        if (selectedPeriodEnd) params.data_final = selectedPeriodEnd;
-        if (selectedEnvironment) params.environment_id = selectedEnvironment;
+        const params = { sensor: selectedSensor.id };
+        if (selectedPeriodStart) params.data_inicial = formatDate(selectedPeriodStart);
+        if (selectedPeriodEnd) params.data_final = formatDate(selectedPeriodEnd);
+        if (selectedEnvironment) params.ambiente_id = selectedEnvironment;
 
         const resp = await axios.get(
-          "http://127.0.0.1:8000/api/historicos/filtrar/sensor-data",
+          "http://127.0.0.1:8000/api/historicos/filtrar/sensor-data-hora",
           {
             headers: { Authorization: `Bearer ${token}` },
             params,
@@ -129,12 +132,12 @@ const Dashboard = () => {
     fetchHistoricos();
   }, [selectedSensor, selectedPeriodStart, selectedPeriodEnd, selectedEnvironment, token]);
 
-  // Resetar sensor quando o ambiente mudar
+  // Resetar sensor quando ambiente mudar
   useEffect(() => {
     setSelectedSensor(null);
   }, [selectedEnvironment]);
 
-  // Paginação do sensorData
+  // Paginação
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pagedSensors = sensorData.slice(startIndex, startIndex + itemsPerPage);
 
@@ -150,9 +153,12 @@ const Dashboard = () => {
           sensors={sensorData}
           onEnvironmentChange={setEnvironments}
           onSensorChange={setSensorData}
+          selectedPeriodStart={selectedPeriodStart}
+          selectedPeriodEnd={selectedPeriodEnd}
+          setSelectedPeriodStart={setSelectedPeriodStart}
+          setSelectedPeriodEnd={setSelectedPeriodEnd}
         />
 
-        {/* Search for sensor type */}
         <input
           type="text"
           placeholder="Search type of sensor"
@@ -161,7 +167,6 @@ const Dashboard = () => {
           onChange={(e) => setSearchTermSensor(e.target.value)}
         />
       </div>
-
 
       <div className="grid gap-6 grid-cols-1">
         {pagedSensors.map((sensor, index) => (

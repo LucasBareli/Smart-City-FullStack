@@ -78,6 +78,26 @@ export const DropdownMenu = ({
           </option>
         ))}
       </select>
+      <div className="flex gap-4 mb-4">
+        <label>
+          Data inicial:
+          <input
+            type="datetime-local"
+            value={selectedPeriodStart}
+            onChange={(e) => setSelectedPeriodStart(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+        </label>
+        <label>
+          Data final:
+          <input
+            type="datetime-local"
+            value={selectedPeriodEnd}
+            onChange={(e) => setSelectedPeriodEnd(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+        </label>
+      </div>
 
       {/* Sensor Dropdown */}
       <div className="relative">
@@ -98,7 +118,7 @@ export const DropdownMenu = ({
               <div
                 key={sensor.id}
                 onClick={() => {
-                  setSelectedSensor(sensor.id); // Atualiza o sensor selecionado
+                  setSelectedSensor(sensor); // Atualiza o sensor selecionado
                   setShowSensorDropdown(false);
                 }}
                 className="cursor-pointer px-4 py-2 hover:bg-[#3C096C] hover:text-white"
