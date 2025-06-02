@@ -73,18 +73,21 @@ http://127.0.0.1:8000/api/ambientes/search?search=20400001
 Localizar por ID de histórico:
 
 http://127.0.0.1:8000/api/historicos/{id}
+
 http://127.0.0.1:8000/api/historicos/3
 
 
 Filtro duplo por DATA e SENSOR
 
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor={sensor_id}&data_inicial={data_inicial}&data_final={data_final}
+
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor=1&data_inicial=2025-05-01T00:00:00&data_final=2025-05-26T23:59:59
 
 
 Filtro triplo por DATA, SENSOR e HORA
 
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor={sensor_id}&data_inicial={data_inicial}&data_final={data_final}
+
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor=1&data_inicial=2025-05-16T02:00:00Z&data_final=2025-05-16T03:00:00Z
 
 
