@@ -3,6 +3,7 @@ import axios from "axios";
 import { Card } from "../components/Card";
 import { DropdownMenu } from "../components/DropdownMenu";
 import ReactApexChart from "react-apexcharts";
+import { Search } from "lucide-react";
 
 const Dashboard = () => {
   const [sensorData, setSensorData] = useState([]);
@@ -78,17 +79,17 @@ const Dashboard = () => {
     fetchSensors();
   }, [searchTermSensor, selectedEnvironment, token]);
 
-  // Formatar datas para ISO sem timezone para API (se precisar)
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().slice(0, 19);
-  };
-
   // Buscar histórico filtrado por sensor, período e ambiente
   useEffect(() => {
     const fetchHistoricos = async () => {
+      console.log("Filtros usados para buscar histórico:");
+      console.log("selectedSensor:", selectedSensor);
+      console.log("selectedPeriodStart:", selectedPeriodStart);
+      console.log("selectedPeriodEnd:", selectedPeriodEnd);
+      console.log("selectedEnvironment:", selectedEnvironment);
+
       if (!selectedSensor) {
+        console.log("Nenhum sensor selecionado. Limpando histórico.");
         setHistoricoData({});
         return;
       }
@@ -99,17 +100,30 @@ const Dashboard = () => {
 
       try {
         const params = { sensor: selectedSensor.id };
-        if (selectedPeriodStart) params.data_inicial = formatDate(selectedPeriodStart);
-        if (selectedPeriodEnd) params.data_final = formatDate(selectedPeriodEnd);
-        if (selectedEnvironment) params.ambiente_id = selectedEnvironment;
 
-        const resp = await axios.get(
-          "http://127.0.0.1:8000/api/historicos/filtrar/sensor-data-hora",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params,
-          }
-        );
+        if (selectedPeriodStart) {
+          params.data_inicial = formatDate(selectedPeriodStart);
+        }
+        if (selectedPeriodEnd) {
+          params.data_final = formatDate(selectedPeriodEnd);
+        }
+        if (selectedEnvironment) {
+          params.ambiente_id = selectedEnvironment;
+        }
+
+        console.log("Parâmetros enviados na requisição:", params);
+
+        const url =
+          selectedPeriodEnd && new Date(selectedPeriodEnd) - new Date(selectedPeriodStart) < 86400000
+            ? "http://127.0.0.1:8000/api/historicos/filtrar/sensor-data-hora"
+            : "http://127.0.0.1:8000/api/historicos/filtrar/sensor-data";
+
+        const resp = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        });
+
+        console.log("Resposta do histórico:", resp.data);
 
         const historicoMap = {};
         resp.data.forEach((h) => {
@@ -131,6 +145,7 @@ const Dashboard = () => {
 
     fetchHistoricos();
   }, [selectedSensor, selectedPeriodStart, selectedPeriodEnd, selectedEnvironment, token]);
+
 
   // Resetar sensor quando ambiente mudar
   useEffect(() => {
@@ -159,13 +174,19 @@ const Dashboard = () => {
           setSelectedPeriodEnd={setSelectedPeriodEnd}
         />
 
-        <input
-          type="text"
-          placeholder="Search type of sensor"
-          className="border rounded-lg px-3 py-2 league-regular"
-          value={searchTermSensor}
-          onChange={(e) => setSearchTermSensor(e.target.value)}
-        />
+        <div className="relative w-[250px]">
+          <Search
+            className="absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-500"
+            size={18}
+          />
+          <input
+            type="text"
+            placeholder="Search type of sensor"
+            className="border rounded-lg px-3 py-2 league-regular !pl-7"
+            value={searchTermSensor}
+            onChange={(e) => setSearchTermSensor(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="grid gap-6 grid-cols-1">

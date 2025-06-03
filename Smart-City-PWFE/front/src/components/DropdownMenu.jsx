@@ -9,24 +9,27 @@ export const DropdownMenu = ({
   environments = [],
   selectedEnvironment,
   selectedSensor,
+  selectedPeriodStart,
+  selectedPeriodEnd,
+  setSelectedPeriodStart,
+  setSelectedPeriodEnd,
   setSelectedEnvironment,
   setSelectedSensor,
 }) => {
-  const [showSensorDropdown, setShowSensorDropdown] = useState(false);
 
   // Requisição para buscar os ambientes (apenas uma vez)
   useEffect(() => {
     if (environments.length === 0) {
       const fetchEnvironments = async () => {
         const token = localStorage.getItem("token");
-        console.log("Token:", token);  // Verifique se o token é válido
+        console.log("Token:", token);
         if (!token) {
           console.error("Token não encontrado. Usuário não autenticado.");
           return;
         }
         try {
           const response = await axios.get("http://127.0.0.1:8000/api/ambientes", {
-            headers: { Authorization: `Bearer ${token}` },  // Passando o token no header
+            headers: { Authorization: `Bearer ${token}` },
           });
           onEnvironmentChange(response.data);
         } catch (error) {
@@ -36,7 +39,6 @@ export const DropdownMenu = ({
       fetchEnvironments();
     }
   }, [environments, onEnvironmentChange]);
-
 
   // Requisição para buscar sensores com base no ambiente selecionado
   useEffect(() => {
@@ -50,13 +52,15 @@ export const DropdownMenu = ({
         try {
           const response = await axios.get("http://127.0.0.1:8000/api/sensores", {
             params: { ambiente_id: selectedEnvironment },
+            headers: { Authorization: `Bearer ${token}` },
           });
-          onSensorChange(response.data); // Atualiza os sensores conforme o ambiente
+          console.log("Sensores carregados:", response.data); // 👈 ADICIONE ISSO
+          onSensorChange(response.data);
         } catch (error) {
           console.error("Erro ao buscar sensores:", error);
         }
       } else {
-        onSensorChange([]); // Limpa os sensores se não houver ambiente selecionado
+        onSensorChange([]);
       }
     };
 
@@ -67,11 +71,14 @@ export const DropdownMenu = ({
     <div className="flex items-center gap-4 p-4">
       {/* Environment Dropdown */}
       <select
-        className="bg-[#3C096C] league-regular h-9 w-48 text-white px-4 py-2 rounded-full focus:outline-none"
+        className="bg-[#3C096C] league-regular h-9 w-48 text-white px-4 py-2 rounded-full focus:outline-none cursor-pointer"
         value={selectedEnvironment}
-        onChange={(e) => setSelectedEnvironment(e.target.value)} // Atualiza o estado ao selecionar ambiente
+        onChange={(e) => {
+          console.log("Ambiente selecionado:", e.target.value);
+          setSelectedEnvironment(e.target.value);
+        }}
       >
-        <option value="">Ambiente</option>
+        <option value="">Environment</option>
         {environments.map((env) => (
           <option key={env.id} value={env.id}>
             {env.descricao}
@@ -99,36 +106,24 @@ export const DropdownMenu = ({
         </label>
       </div>
 
-      {/* Sensor Dropdown */}
       <div className="relative">
-        <button
-          className="bg-[#17CF96] text-black league-regular px-6 py-2 h-9 rounded-full flex items-center gap-2"
-          onClick={() => setShowSensorDropdown((prev) => !prev)}
+        <select
+          className="bg-[#17CF96] text-black league-regular px-6 py-2 h-9 rounded-full cursor-pointer"
+          value={selectedSensor ? selectedSensor.sensor : ""}
+          onChange={(e) => {
+            const selected = sensors.find(sensor => sensor.sensor === e.target.value);
+            console.log("Sensor selecionado:", selected);
+            setSelectedSensor(selected || null);
+          }}
         >
-          {selectedSensor
-            ? sensors.find((s) => s.id === selectedSensor)?.sensor || selectedSensor
-            : "Sensor"}
-          <FaChevronDown />
-        </button>
-
-        {showSensorDropdown && (
-          <div className="absolute top-full mt-1 right-0 w-48 max-h-60 overflow-auto bg-white border border-gray-300 rounded-md shadow-lg z-50">
-            {sensors.length === 0 && <p className="p-2 text-gray-500">Nenhum sensor encontrado</p>}
-            {sensors.map((sensor) => (
-              <div
-                key={sensor.id}
-                onClick={() => {
-                  setSelectedSensor(sensor); // Atualiza o sensor selecionado
-                  setShowSensorDropdown(false);
-                }}
-                className="cursor-pointer px-4 py-2 hover:bg-[#3C096C] hover:text-white"
-              >
-                {sensor.sensor}
-              </div>
-            ))}
-          </div>
-        )}
+          <option value="">Sensor</option>
+          <option value="temperatura">Temperatura</option>
+          <option value="umidade">Umidade</option>
+          <option value="contador">Contador</option>
+          <option value="luminosidade">Luminosidade</option>
+        </select>
       </div>
+
     </div>
   );
 };

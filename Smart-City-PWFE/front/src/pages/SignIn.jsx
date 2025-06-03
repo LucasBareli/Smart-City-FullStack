@@ -59,7 +59,7 @@ function SignIn() {
               <input
                 id="user"
                 type="text"
-                className="w-85 !ml-10 px-4 py-3 league-regular border border-[#3C096C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3C096C]"
+                className="w-85 !ml-10 px-4 py-3 league-regular border border-[#3C096C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3C096C] !pl-3"
                 placeholder="Enter your username"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
@@ -75,7 +75,7 @@ function SignIn() {
               <input
                 id="password"
                 type="password"
-                className="w-85 !ml-10 px-4 py-3 league-regular border border-[#3C096C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3C096C]"
+                className="w-85 !ml-10 px-4 py-3 league-regular border border-[#3C096C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3C096C] !pl-3"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
