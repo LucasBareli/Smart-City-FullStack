@@ -16,31 +16,38 @@ py manage.py runserver
 1 - Localizar por id de SENSOR:
 
 http://127.0.0.1:8000/api/sensores/{id}
+
 http://127.0.0.1:8000/api/sensores/6
 
 2 - Localizar por TIPO de SENSOR:
 http://127.0.0.1:8000/api/sensores/search?search={tipo_sensor}
+
 http://127.0.0.1:8000/api/sensores/search?search=temperatura
 
 3 - Localizar por STATUS do SENSOR:
 http://127.0.0.1:8000/api/sensores/search?status=true
+
 http://127.0.0.1:8000/api/sensores/search?status=false
 
 4 - Localizar AMBIENTE por SIG:
 http://127.0.0.1:8000/api/ambientes/search?search={numero_sigla}
+
 http://127.0.0.1:8000/api/ambientes/search?search=20400003
 
 5 - Localizar por ID de HISTÓRICO:
 http://127.0.0.1:8000/api/historicos/{id}
+
 http://127.0.0.1:8000/api/historicos/3
 
 6 - Filtro duplo por DATA e SENSOR:
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor={sensor_id}&data_inicial={data_inicial}&data_final={data_final}
+
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor=6&data_inicial=2025-02-01T00:00:00&data_final=2025-02-28T23:59:59
 
 
 7 - Filtro triplo por DATA, SENSOR e HORA
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data?sensor={sensor_id}&data_inicial={data_inicial}&data_final={data_final}
+
 http://127.0.0.1:8000/api/historicos/filtrar/sensor-data-hora?sensor=6&data_inicial=2025-02-27T00:00:00&data_final=2025-02-28T23:59:59
 
 
