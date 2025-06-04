@@ -68,86 +68,92 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[500px] max-w-full">
-        <h2 className="text-2xl font-semibold mb-4 league-regular">
-          {ambienteData ? "Edit Environment" : "New Environment"}
-        </h2>
+    <>
+      {/* Fundo desfocado */}
+      <div className="fixed inset-0 bg-opacity-10 backdrop-blur-sm z-40"></div>
 
-        {error && (
-          <div className="bg-red-100 text-red-700 p-2 rounded-md mb-4">
-            {error}
-          </div>
-        )}
+      {/* Modal */}
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg !p-6 w-[500px] max-w-full border-4 border-[#3C096C]">
+          <h2 className="text-2xl font-semibold mb-4 league-regular">
+            {ambienteData ? "Edit Environment" : "New Environment"}
+          </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          {/* Descrição */}
-          <label className="league-regular">
-            Description:
-            <input
-              type="text"
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+          {error && (
+            <div className="bg-red-100 text-red-700 p-2 rounded-md mb-4">
+              {error}
+            </div>
+          )}
 
-          {/* SIG */}
-          <label className="league-regular">
-            SIG:
-            <input
-              type="text"
-              value={sig}
-              onChange={(e) => setSig(e.target.value)}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+            {/* Descrição */}
+            <label className="league-regular">
+              Description:
+              <input
+                type="text"
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* NI */}
-          <label className="league-regular">
-            NI:
-            <input
-              type="text"
-              value={ni}
-              onChange={(e) => setNi(e.target.value)}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* SIG */}
+            <label className="league-regular">
+              SIG:
+              <input
+                type="text"
+                value={sig}
+                onChange={(e) => setSig(e.target.value)}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Responsável */}
-          <label className="league-regular">
-            Responsible:
-            <input
-              type="text"
-              value={responsavel}
-              onChange={(e) => setResponsavel(e.target.value)}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* NI */}
+            <label className="league-regular">
+              NI:
+              <input
+                type="text"
+                value={ni}
+                onChange={(e) => setNi(e.target.value)}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Buttons */}
-          <div className="flex justify-end gap-4 mt-5">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-200 w-24 league-regular cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-[#3C096C] text-white rounded hover:bg-[#7625c2] w-24 league-regular cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
-          </div>
-        </form>
+            {/* Responsável */}
+            <label className="league-regular">
+              Responsible:
+              <input
+                type="text"
+                value={responsavel}
+                onChange={(e) => setResponsavel(e.target.value)}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
+
+            {/* Buttons */}
+            <div className="flex justify-end gap-4 !mt-5">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-200 w-24 league-regular cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-[#3C096C] text-white rounded hover:bg-[#7625c2] w-24 league-regular cursor-pointer"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

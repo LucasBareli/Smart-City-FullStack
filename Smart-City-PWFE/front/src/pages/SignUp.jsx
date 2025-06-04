@@ -49,7 +49,7 @@ function SignUp() {
                         Welcome to <span className="text-[#3C096C] league-regular font-semibold">Smart</span> <span className="text-[#17CF96] league-regular font-semibold">City</span>
                     </h1>
                     <p className="text-black text-[20px] font-thin league-regular !mb-8 leading-relaxed max-w-90">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        Welcome to the Smart City, develompment by student <span className="font-bold league-regular">Lucas Bareli</span>
                     </p>
                     <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
                         <div>
@@ -103,7 +103,7 @@ function SignUp() {
 
                     <p className="!mt-6 text-[20px] league-regular text-center text-black font-thin">
                         Do you have an account?{' '}
-                        <a href="/" className="text-[#3C096C] text-[20px] league-regular hover:underline">
+                        <a href="/" className="text-[#3C096C] text-[20px] league-regular underline">
                             Sign In
                         </a>
                     </p>

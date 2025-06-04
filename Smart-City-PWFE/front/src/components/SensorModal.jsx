@@ -82,125 +82,131 @@ export default function SensorModal({ isOpen, onClose, onSave, sensorData }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[500px] max-w-full">
-        <h2 className="text-2xl font-semibold mb-4 league-regular">
-          {sensorData ? "Edit Sensor" : "New Sensor"}
-        </h2>
+    <>
+      {/* Fundo desfocado */}
+      <div className="fixed inset-0 bg-opacity-10 backdrop-blur-sm z-40"></div>
 
-        {error && (
-          <div className="bg-red-100 text-red-700 p-2 rounded-md mb-4">
-            {error}
-          </div>
-        )}
+      {/* Modal */}
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg w-[500px] max-w-full border-4 border-[#3C096C] !p-6">
+          <h2 className="text-2xl font-semibold mb-4 league-regular">
+            {sensorData ? "Edit Sensor" : "New Sensor"}
+          </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          {/* Sensor Type */}
-          <label className="league-regular">
-            Sensor Type:
-            <select
-              value={sensor}
-              onChange={(e) => setSensor(e.target.value)}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            >
-              <option value="" disabled className="league-regular">
-                Select sensor type
-              </option>
-              {SENSOR_TYPES.map((option) => (
-                <option key={option.value} value={option.value} className="league-regular">
-                  {option.label}
+          {error && (
+            <div className="bg-red-100 text-red-700 p-2 rounded-md mb-4">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+            {/* Sensor Type */}
+            <label className="league-regular">
+              Sensor Type:
+              <select
+                value={sensor}
+                onChange={(e) => setSensor(e.target.value)}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              >
+                <option value="" disabled className="league-regular">
+                  Select sensor type
                 </option>
-              ))}
-            </select>
-          </label>
+                {SENSOR_TYPES.map((option) => (
+                  <option key={option.value} value={option.value} className="league-regular">
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          {/* Status */}
-          <label className="league-regular">
-            Status:
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value === "true")}
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-            >
-              <option value="true" className="league-regular">Active</option>
-              <option value="false" className="league-regular">Inactive</option>
-            </select>
-          </label>
+            {/* Status */}
+            <label className="league-regular">
+              Status:
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value === "true")}
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+              >
+                <option value="true" className="league-regular">Active</option>
+                <option value="false" className="league-regular">Inactive</option>
+              </select>
+            </label>
 
-          {/* MAC Address */}
-          <label className="league-regular">
-            MAC Address:
-            <input
-              type="text"
-              value={macAddress}
-              onChange={(e) => setMacAddress(e.target.value)}
-              placeholder="00:1A:C2:7B:00:47"
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* MAC Address */}
+            <label className="league-regular">
+              MAC Address:
+              <input
+                type="text"
+                value={macAddress}
+                onChange={(e) => setMacAddress(e.target.value)}
+                placeholder="00:1A:C2:7B:00:47"
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Latitude */}
-          <label className="league-regular">
-            Latitude:
-            <input
-              type="number"
-              step="0.000001"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-              placeholder="E.g.: -23.550520"
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* Latitude */}
+            <label className="league-regular">
+              Latitude:
+              <input
+                type="number"
+                step="0.000001"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                placeholder="E.g.: -23.550520"
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Longitude */}
-          <label className="league-regular">
-            Longitude:
-            <input
-              type="number"
-              step="0.000001"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-              placeholder="E.g.: -46.633308"
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* Longitude */}
+            <label className="league-regular">
+              Longitude:
+              <input
+                type="number"
+                step="0.000001"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                placeholder="E.g.: -46.633308"
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Measurement Unit */}
-          <label className="league-regular">
-            Measurement Unit:
-            <input
-              type="text"
-              value={unidadeMed}
-              onChange={(e) => setUnidadeMed(e.target.value)}
-              placeholder="E.g.: °C, %, lux, num"
-              className="border border-gray-300 rounded p-2 w-full league-regular"
-              required
-            />
-          </label>
+            {/* Measurement Unit */}
+            <label className="league-regular">
+              Measurement Unit:
+              <input
+                type="text"
+                value={unidadeMed}
+                onChange={(e) => setUnidadeMed(e.target.value)}
+                placeholder="E.g.: °C, %, lux, num"
+                className="border border-gray-300 rounded p-2 w-full league-regular"
+                required
+              />
+            </label>
 
-          {/* Buttons */}
-          <div className="flex justify-end gap-4 mt-5">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-200 w-24 league-regular cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-[#3C096C] text-white rounded hover:bg-[#7625c2] w-24 league-regular cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
-          </div>
-        </form>
+            {/* Buttons */}
+            <div className="flex justify-end gap-4 !mt-5">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-200 w-24 league-regular cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-[#3C096C] text-white rounded hover:bg-[#7625c2] w-24 league-regular cursor-pointer"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

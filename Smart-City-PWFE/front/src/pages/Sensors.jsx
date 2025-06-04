@@ -112,7 +112,7 @@ export default function Sensors() {
 
   // Função para excluir sensor (DELETE)
   function handleDelete(sensorToDelete) {
-    if (window.confirm("Tem certeza de que deseja excluir este sensor?")) {
+    if (window.confirm("Are you sure you want to delete?")) {
       const token = localStorage.getItem("token");
       axios
         .delete(`http://127.0.0.1:8000/api/sensores/${sensorToDelete.id}`, {
@@ -120,22 +120,20 @@ export default function Sensors() {
         })
         .then(() => {
           setTableData(tableData.filter((item) => item !== sensorToDelete));
-          console.log("Sensor excluído com sucesso.");
+          console.log("Sucess to delete sensor.");
         })
         .catch((error) => {
-          console.error("Erro ao excluir sensor:", error);
+          console.error("Error to delete sensor:", error);
         });
     }
   }
 
   function handleSave(sensor) {
     if (editingSensor) {
-      // Atualizar sensor existente
       setTableData(
         tableData.map((item) => (item.id === sensor.id ? sensor : item))
       );
     } else {
-      // Adicionar novo sensor
       setTableData([...tableData, sensor]);
     }
     setIsModalOpen(false);

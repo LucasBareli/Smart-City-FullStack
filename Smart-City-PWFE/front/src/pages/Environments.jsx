@@ -111,7 +111,7 @@ export default function Environments() {
 
     // Função para excluir ambiente (DELETE)
     function handleDelete(ambienteToDelete) {
-        if (window.confirm("Tem certeza de que deseja excluir este ambiente?")) {
+        if (window.confirm("Are you sure you want to delete?")) {
             const token = localStorage.getItem("token");
             axios
                 .delete(`http://127.0.0.1:8000/api/ambientes/${ambienteToDelete.id}`, {
@@ -119,22 +119,20 @@ export default function Environments() {
                 })
                 .then(() => {
                     setTableData(tableData.filter((item) => item !== ambienteToDelete));
-                    console.log("Ambiente excluído com sucesso.");
+                    console.log("Delete sucess");
                 })
                 .catch((error) => {
-                    console.error("Erro ao excluir ambiente:", error);
+                    console.error("Error to delete environment:", error);
                 });
         }
     }
 
     function handleSave(ambiente) {
         if (editingEnvorinment) {
-            // Atualizar ambiente existente
             setTableData(
                 tableData.map((item) => (item.id === ambiente.id ? ambiente : item))
             );
         } else {
-            // Adicionar novo ambiente
             setTableData([...tableData, ambiente]);
         }
         setIsModalOpen(false);

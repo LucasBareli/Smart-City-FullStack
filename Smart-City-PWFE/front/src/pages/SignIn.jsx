@@ -28,6 +28,12 @@ function SignIn() {
     navigate("/signup");
   };
 
+  const lembrarSenha = (e) => {
+    e.preventDefault(); 
+    alert("Remember kkkk");
+  };
+
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50">
       <div className="flex w-full h-full bg-white lg:rounded-3xl">
@@ -42,8 +48,7 @@ function SignIn() {
             </span>
           </h1>
           <p className="text-black text-[20px] font-thin league-regular !mb-8 leading-relaxed max-w-90">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            Welcome to the Smart City, develompment by student <span className="league-regular font-bold">Lucas Bareli</span>
           </p>
           <form
             className="space-y-6 w-full max-w-md"
@@ -85,6 +90,7 @@ function SignIn() {
             <div className="text-right !mt-5">
               <a
                 href="#"
+                onClick={lembrarSenha}
                 className="text-[#3C096C] league-regular text-[16px] font-thin hover:underline !mr-17"
               >
                 Forgot a password?
@@ -102,7 +108,7 @@ function SignIn() {
             <a
               href="#"
               onClick={irParaCadastro}
-              className="text-[#3C096C] text-[20px] league-regular hover:underline"
+              className="text-[#3C096C] underline text-[20px] league-regular"
             >
               Sign Up
             </a>
