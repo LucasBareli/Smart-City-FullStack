@@ -15,9 +15,9 @@ const Header = () => {
         <header className="absolute top-0 w-full z-10">
             <nav className="container mx-auto flex items-center justify-between py-4 px-6">
                 <div>
-                    <h3 className="text-[64px] font-regular text-[#3C096C] !ml-20">
+                    <a href="/home" className="text-[64px] font-regular text-[#3C096C] !ml-20">
                         SMART <span className="text-[#17CF96]">CITY</span>
-                    </h3>
+                    </a>
                 </div>
 
                 <ul className="flex space-x-8 text-[36px] lateef-regular font-regular text-[#3C096C] gap-20 !m-10">
