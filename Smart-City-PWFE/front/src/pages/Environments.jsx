@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sensor1 from "../assets/Sensor 1.png";
-import Sensor2 from "../assets/Sensor 2.png";
-import Sensor3 from "../assets/Sensor 3.png";
+import Environments1 from "../assets/Environments 1.jpg";
+import Environments2 from "../assets/Environments 2.jpg";
+import Environments3 from "../assets/Environments 3.jpg";
 import CityCarrossel from "../assets/CityCarrossel.png"
 import Header from "../components/Header";
 import Footer from "../components/Footer"
-import {Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import { CiCirclePlus } from "react-icons/ci";
-import CarouselSensor from "../components/CarouselSensor";
 import CarouselSensor2 from "../components/CarouselSensor2";
 import EnvironmentsModal from "../components/EnvironmentsModal";
+import CarouselEnvironments from "../components/CarouselEnvironments";
 
 export default function Environments() {
     const allImages = [
-        { src: Sensor1, alt: "Temperature", label: "Temperature", title: "Efficient and Reliable Temperature Monitoring", text: "Tracks environmental temperature for optimized climate control and accurate data analysis." },
-        { src: Sensor2, alt: "Humidity", label: "Humidity", title: "Precise and Adaptive Humidity Detection", text: "Monitors air moisture levels for enhanced climate management and efficient resource utilization." },
-        { src: Sensor3, alt: "Luminosity", label: "Luminosity", title: "Advanced Light Intensity Measurement Tool", text: "Ensures optimal lighting efficiency in smart systems and adaptable environments." },
+        { src: Environments1, alt: "Mechanics", label: "Mechanics", title: "Mechanical Industry", text: "Temperature, humidity, and luminosity control are vital for protecting machinery and optimizing efficiency in mechanical industries." },
+        { src: Environments2, alt: "Computer", label: "Computer", title: "Computer Environment", text: "Maintain ideal temperature and humidity to safeguard electronics. Luminosity control optimizes data center efficiency." },
+        { src: Environments3, alt: "Maker", label: "Maker", title: "Space Maker", text: "Adaptable luminosity, temperature, and humidity control create perfect conditions for diverse Space Maker projects." },
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -141,20 +141,20 @@ export default function Environments() {
     function getEnvironmentImage(environmentName) {
         if (typeof environmentName !== "string") {
             console.warn("Valor inválido para 'environmentName':", environmentName);
-            return Sensor3; 
+            return Environments3;
         }
 
         switch (environmentName.toLowerCase()) {
             case "contador":
-                return Sensor3;
+                return Environments3;
             case "temperatura":
-                return Sensor2;
+                return Environments2;
             case "umidade":
-                return Sensor3;
+                return Environments3;
             case "luminosidade":
-                return Sensor1;
+                return Environments1;
             default:
-                return Sensor3; 
+                return Environments3;
         }
     }
 
@@ -254,7 +254,7 @@ export default function Environments() {
                         </div>
                     </div>
 
-                    <CarouselSensor
+                    <CarouselEnvironments
                         images={allImages}
                         currentIndex={currentIndex}
                         setCurrentIndex={setCurrentIndex}
