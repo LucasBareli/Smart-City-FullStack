@@ -6,10 +6,14 @@ import LoginImage from "../assets/Login.png";
 function SignIn() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  // 1. Estado para controlar o pop-up de erro
+  const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
 
   const logar = async (e) => {
     e.preventDefault();
+    setLoginError(false); // Reseta o erro a cada nova tentativa
+
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/token/", {
         username: user,
@@ -19,20 +23,20 @@ function SignIn() {
       localStorage.setItem("username", user);
       navigate("/home");
     } catch (error) {
+      // 2. Ativa o pop-up em caso de erro
       console.error("Login Error: ", error);
+      setLoginError(true);
     }
   };
-
 
   const irParaCadastro = () => {
     navigate("/signup");
   };
 
   const lembrarSenha = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     alert("Remember kkkk");
   };
-
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50">
@@ -123,6 +127,24 @@ function SignIn() {
           />
         </div>
       </div>
+
+      {/* Pop-up erro de senha ou username */}
+      {loginError && (
+        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 league-regular">Login Failed</h2>
+            <p className="!mb-6 text-gray-700 league-regular">
+              The username or password you entered is incorrect. Please try again.
+            </p>
+            <button
+              onClick={() => setLoginError(false)}
+              className="w-full bg-[#3C096C] text-white font-semibold rounded-lg hover:bg-[#2a064f] transition league-regular cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </div>  
+      )}
     </div>
   );
 }

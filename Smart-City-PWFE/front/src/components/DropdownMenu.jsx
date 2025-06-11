@@ -61,6 +61,7 @@ export const DropdownMenu = ({
   return (
     <div className="flex items-center justify-between p-4 !mt-30 !ml-15">
       <div className="flex gap-4 mb-4">
+        {/* Os dados estão em português, porque o banco esta populado em português, com isso para funcionar precisei "misturar" duas linguas, porque quis desenvolver em inglês para treinar */}
         <label className="league-regular">
           First Day:
           <input

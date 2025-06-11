@@ -180,7 +180,7 @@ const Dashboard = () => {
                     }}
                     series={[
                       {
-                        name: "Valor",
+                        name: "Price",
                         data: historicoData[sensor.id] || [],
                       },
                     ]}

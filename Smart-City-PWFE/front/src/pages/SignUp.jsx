@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import LoginImage from '../assets/Login.png';
+import LoginImage from "../assets/Login.png";
 
 function SignUp() {
     const [formData, setFormData] = useState({
@@ -9,7 +9,11 @@ function SignUp() {
         confirmPassword: ""
     });
 
-    const [error, setError] = useState("");
+    const [modal, setModal] = useState({
+        isOpen: false,
+        message: "",
+        isError: false
+    });
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -18,10 +22,23 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setModal({ isOpen: false, message: "", isError: false });
 
         if (formData.password !== formData.confirmPassword) {
-            setError("Passwords do not match.");
+            setModal({
+                isOpen: true,
+                message: "Passwords do not match. Please check and try again.",
+                isError: true
+            });
+            return;
+        }
+
+        if (!formData.username || !formData.password) {
+            setModal({
+                isOpen: true,
+                message: "Username and password cannot be empty.",
+                isError: true
+            });
             return;
         }
 
@@ -32,13 +49,31 @@ function SignUp() {
             });
 
             if (response.status === 201) {
-                alert("User created successfully!");
-                window.location.href = "/";
+                setModal({
+                    isOpen: true,
+                    message: "User created successfully! You will be redirected to the login page.",
+                    isError: false
+                });
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 2500);
             }
         } catch (err) {
             console.error(err);
-            setError("Failed to create user. Please try again.");
+            let errorMessage = "Failed to create user. Please try again later.";
+            if (err.response && err.response.data && err.response.data.username) {
+                errorMessage = `Failed to create user: ${err.response.data.username[0]}`;
+            }
+             setModal({
+                isOpen: true,
+                message: errorMessage,
+                isError: true
+            });
         }
+    };
+
+    const closeModal = () => {
+        setModal({ isOpen: false, message: "", isError: false });
     };
 
     return (
@@ -92,7 +127,6 @@ function SignUp() {
                             />
                         </div>
 
-                        {error && <p className="text-red-500 text-center">{error}</p>}
                         <button
                             type="submit"
                             className="w-85 !mt-5 bg-[#17CF96] league-regular block text-white text-[24px] font-semibold py-3 rounded-lg hover:bg-[#13B983] hover:cursor-pointer transition !ml-10"
@@ -113,10 +147,30 @@ function SignUp() {
                     <img
                         src={LoginImage}
                         alt="City View"
-                        className="w-full h-225 object-cover rounded-3xl"
+                        className="w-full h-full object-cover rounded-3xl"
                     />
                 </div>
             </div>
+
+            {/* Conditional Pop-up Rendering */}
+            {modal.isOpen && (
+                <div className="fixed inset-0 bg-opacity-60 flex justify-center items-center z-50">
+                    <div className="bg-white p-8 rounded-xl shadow-2xl text-center max-w-sm mx-4">
+                        <h2 className={`text-2xl font-bold mb-4 league-regular ${modal.isError ? 'text-red-600' : 'text-green-600'}`}>
+                            {modal.isError ? 'Error' : 'Success'}
+                        </h2>
+                        <p className="!mb-6 text-gray-700 league-regular text-lg">
+                           {modal.message}
+                        </p>
+                        <button
+                            onClick={closeModal}
+                            className={`w-full text-white font-semibold py-2 rounded-lg transition league-regular cursor-pointer ${modal.isError ? 'bg-[#3C096C] hover:bg-[#2a064f]' : 'bg-green-600 hover:bg-green-700'} ${!modal.isError ? 'hidden' : ''}`}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
