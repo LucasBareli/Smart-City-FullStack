@@ -136,7 +136,7 @@ const Dashboard = () => {
                     R${" "}
                     {historicoData[sensor.id] && historicoData[sensor.id].length > 0
                       ? historicoData[sensor.id][historicoData[sensor.id].length - 1].y.toFixed(2)
-                      : "Price is not avaliable"}
+                      : "Data is not avaliable"}
                   </p>
                 </div>
 
@@ -162,7 +162,7 @@ const Dashboard = () => {
                         },
                       },
                       title: {
-                        text: "Data Price",
+                        text: "Data Valor",
                         align: "left",
                         style: { fontSize: "14px", color: "#666" },
                       },
@@ -181,7 +181,7 @@ const Dashboard = () => {
                     }}
                     series={[
                       {
-                        name: "Price",
+                        name: "Valor",
                         data: historicoData[sensor.id] || [],
                       },
                     ]}
