@@ -56,6 +56,9 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
       });
 
       onSave(response.data);
+
+      alert(ambienteData ? "Environment updated successfully!" : "Environment created successfully!");
+
       onClose();
     } catch (err) {
       console.error("Error saving environment:", err.response?.data || err.message);
@@ -93,6 +96,7 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
                 type="text"
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
+                placeholder="E.g.: Biblioteca"
                 className="border border-gray-300 rounded p-2 w-full league-regular"
                 required
               />
@@ -105,6 +109,7 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
                 type="text"
                 value={sig}
                 onChange={(e) => setSig(e.target.value)}
+                placeholder="E.g.: 20400004"
                 className="border border-gray-300 rounded p-2 w-full league-regular"
                 required
               />
@@ -117,6 +122,7 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
                 type="text"
                 value={ni}
                 onChange={(e) => setNi(e.target.value)}
+                placeholder="E.g.: SN74604"
                 className="border border-gray-300 rounded p-2 w-full league-regular"
                 required
               />
@@ -129,6 +135,7 @@ export default function EnvironmentsModal({ isOpen, onClose, onSave, ambienteDat
                 type="text"
                 value={responsavel}
                 onChange={(e) => setResponsavel(e.target.value)}
+                placeholder="E.g.: Lucas Bareli"
                 className="border border-gray-300 rounded p-2 w-full league-regular"
                 required
               />

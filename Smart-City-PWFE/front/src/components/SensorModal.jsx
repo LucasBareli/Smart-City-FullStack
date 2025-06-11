@@ -70,6 +70,9 @@ export default function SensorModal({ isOpen, onClose, onSave, sensorData }) {
       });
 
       onSave(response.data);
+
+      alert(sensorData ? "Sensor updated successfully!" : "Sensor created successfully!");
+
       onClose();
     } catch (err) {
       console.error("Error saving sensor:", err.response?.data || err.message);
@@ -78,6 +81,7 @@ export default function SensorModal({ isOpen, onClose, onSave, sensorData }) {
       setLoading(false);
     }
   };
+
 
   if (!isOpen) return null;
 

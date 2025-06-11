@@ -18,7 +18,7 @@ const Dashboard = () => {
 
   const token = localStorage.getItem("token");
 
-  // Buscar sensores gerais (sem filtro) - opcional, mantém sensorData para paginação
+  // Buscar sensores gerais (sem filtro)
   useEffect(() => {
     const fetchSensors = async () => {
       if (!token) {
@@ -79,6 +79,7 @@ const Dashboard = () => {
 
   // Filtrar sensores com base no filtro do DropdownMenu:
   const filteredSensors = sensorData.filter((sensor) => {
+    
     // Filtrar por tipo de sensor
     if (selectedSensor && selectedSensor.sensor && sensor.sensor !== selectedSensor.sensor) return false;
 
